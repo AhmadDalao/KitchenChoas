@@ -24,20 +24,16 @@ public class ClearCounter : BaseCounter {
                 // player is holding something 
                 // check if it is a plate kitchen object
                 if (player.GetKitchenObject() is PlateKitchenObject plate) {
-                    // get the kitchen object from the Counter
-                    KitchenObjectScriptable kitchenObjectFromCounter = GetKitchenObject().GetKitchenObjectScriptable();
                     // try to add the kitchen object from counter to plate
-                    if (plate.TryAddIngredient(kitchenObjectFromCounter)) {
+                    if (plate.TryAddIngredient(GetKitchenObject().GetKitchenObjectScriptable())) {
                         // destroy the kitchen object visual from the counter.
                         GetKitchenObject().DestroySelf();
                     }
                 } else {
                     // player is  holding something that is not a plate get it from him
-                    KitchenObjectScriptable kitchenObjectFromPlayer = player.GetKitchenObject().GetKitchenObjectScriptable();
-                    // get reference to the plate kitchen object from the Counter
                     PlateKitchenObject _plate = GetKitchenObject() as PlateKitchenObject;
                     // check if player holding a kitchen object you can add to the plate.
-                    if (_plate.TryAddIngredient(kitchenObjectFromPlayer)) {
+                    if (_plate.TryAddIngredient(player.GetKitchenObject().GetKitchenObjectScriptable())) {
                         // Destroy the kitchen object that the plater had
                         player.GetKitchenObject().DestroySelf();
                     }

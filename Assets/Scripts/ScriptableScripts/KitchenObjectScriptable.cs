@@ -18,4 +18,6 @@ public class KitchenObjectScriptable : ScriptableObject {
         return KitchenObject;
     }
 
+    public Sprite GetKitchenObjectSprite() { return KitchenObjectSprite; }
+
 }

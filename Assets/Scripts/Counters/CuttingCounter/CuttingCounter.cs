@@ -46,10 +46,8 @@ public class CuttingCounter : BaseCounter, IProgressBar {
                 // player is holding something 
                 // check if it is a plate kitchen object
                 if (player.GetKitchenObject() is PlateKitchenObject plate) {
-                    // get the kitchen object from the Counter
-                    KitchenObjectScriptable kitchenObjectFromCounter = GetKitchenObject().GetKitchenObjectScriptable();
                     // try to add the kitchen object from counter to plate
-                    if (plate.TryAddIngredient(kitchenObjectFromCounter)) {
+                    if (plate.TryAddIngredient(GetKitchenObject().GetKitchenObjectScriptable())) {
                         // destroy the kitchen object visual from the counter.
                         GetKitchenObject().DestroySelf();
                     }

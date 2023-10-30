@@ -79,17 +79,17 @@ public class Player : BaseCounter {
         bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHight, playerRadius, moveDirection, _moveDistance);
 
         if (!canMove) {
-            Vector3 moveDirectionX = new Vector3(moveDirection.x, 0f, 0f).normalized;
+            Vector3 moveDirectionX = new Vector3(moveDirection.x, 0f, 0f);
 
-            canMove = moveDirection.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHight, playerRadius, moveDirectionX, _moveDistance);
+            canMove = moveDirectionX.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHight, playerRadius, moveDirectionX, _moveDistance);
 
             if (canMove) {
                 moveDirection = moveDirectionX;
             } else {
 
-                Vector3 moveDirectionZ = new Vector3(moveDirection.x, 0f, 0f).normalized;
+                Vector3 moveDirectionZ = new Vector3(moveDirection.x, 0f, 0f);
 
-                canMove = moveDirection.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHight, playerRadius, moveDirectionZ, _moveDistance);
+                canMove = moveDirectionZ.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHight, playerRadius, moveDirectionZ, _moveDistance);
 
                 if (canMove) {
                     moveDirection = moveDirectionZ;
