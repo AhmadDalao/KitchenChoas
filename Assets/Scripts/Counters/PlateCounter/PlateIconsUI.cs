@@ -23,7 +23,6 @@ public class PlateIconsUI : MonoBehaviour {
     private void UpdatePlateIcon() {
 
         foreach (Transform child in transform) {
-            Debug.Log(child.name);
             if (child == _iconTemplate) continue;
             Destroy(child.gameObject);
         }

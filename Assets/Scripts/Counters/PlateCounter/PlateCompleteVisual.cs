@@ -19,6 +19,10 @@ public class PlateCompleteVisual : MonoBehaviour {
 
     private void Start() {
         _plateKitchenObject.KitchenObjectAddedToPlateEvent += _plateKitchenObject_KitchenObjectAddedToPlateEvent;
+
+        foreach (KitchenObjectScriptable_GameObject item in _kitchenObjectScriptableList) {
+            item.plateGameObject.gameObject.SetActive(false);
+        }
     }
 
     private void _plateKitchenObject_KitchenObjectAddedToPlateEvent(object sender, PlateKitchenObject.KitchenObjectAddedToPlateEventArgs e) {
