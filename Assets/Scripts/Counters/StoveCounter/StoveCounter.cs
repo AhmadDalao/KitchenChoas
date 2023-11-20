@@ -98,9 +98,11 @@ public class StoveCounter : BaseCounter, IProgressBar {
                     }
                     break;
                 case State.Burned:
+                    StoveOnVisualEvent.Invoke(this, new StoveOnVisualEventArgs {
+                        stoveState = _state
+                    });
                     break;
             }
-
         }
     }
 
@@ -141,7 +143,7 @@ public class StoveCounter : BaseCounter, IProgressBar {
                 _burningTime = 0f;
                 // change the state to Idle since the object No Longer on top
                 _state = State.Idle;
-                // trun off the stove using the event
+                // turn off the stove using the event
                 StoveOnVisualEvent.Invoke(this, new StoveOnVisualEventArgs {
                     stoveState = _state
                 });

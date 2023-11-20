@@ -8,6 +8,8 @@ public class DeliveryManager : MonoBehaviour {
 
     public event EventHandler OnRecipeSpawn;
     public event EventHandler OnRecipeCompleted;
+    public event EventHandler OnRecipeSuccess;
+    public event EventHandler OnRecipeFailed;
 
     public static DeliveryManager Instance { get; private set; }
 
@@ -71,7 +73,7 @@ public class DeliveryManager : MonoBehaviour {
                             break;
                         }
                     }
-
+                    // if ingredientMatch is still false
                     if (!ingredientMatch) {
                         // ingredient not found
                         plateContentMatchesRecipe = false;
@@ -85,6 +87,7 @@ public class DeliveryManager : MonoBehaviour {
                     // remove from the list
                     waitingRecipeList.RemoveAt(i);
                     OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
+                    OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
                     return;
                 }
 
@@ -96,6 +99,7 @@ public class DeliveryManager : MonoBehaviour {
         // no matches found.
         // player did not deliver correct recipe.
         Debug.Log(" player did not deliver correct recipe.");
+        OnRecipeFailed?.Invoke(this, EventArgs.Empty);
 
     }
 

@@ -1,8 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TrashCounter : BaseCounter {
+
+
+    public static event EventHandler OnTrashEvent;
 
     public override void Interact(Player player) {
         // ClearCounter has NO kitchen object on top
@@ -11,6 +16,9 @@ public class TrashCounter : BaseCounter {
             if (player.HasKitchenObject()) {
                 // place the Kitchen Object on top of the counter.
                 player.GetKitchenObject().DestroySelf();
+                // trigger event to play sound
+                OnTrashEvent?.Invoke(this, EventArgs.Empty);
+
             } else {
                 // player is not holding anything
             }

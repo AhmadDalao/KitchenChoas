@@ -8,14 +8,14 @@ public class KitchenObject : MonoBehaviour {
     [SerializeField] private KitchenObjectScriptable _kitchenObjectScriptable;
 
 
-    private BaseCounter _currentBaseCounter;
+    private IKitchenObject _currentBaseCounter;
 
     public KitchenObjectScriptable GetKitchenObjectScriptable() {
         return _kitchenObjectScriptable;
     }
 
 
-    public void SetKitchenObjectParent(BaseCounter newBaseCounter) {
+    public void SetKitchenObjectParent(IKitchenObject newBaseCounter) {
         if (_currentBaseCounter != null) {
             _currentBaseCounter.ClearKitchenObject();
         }
@@ -38,7 +38,7 @@ public class KitchenObject : MonoBehaviour {
     }
 
 
-    public static void SpawnKitchenObject(KitchenObjectScriptable kitchenObjectScriptable, BaseCounter parent) {
+    public static void SpawnKitchenObject(KitchenObjectScriptable kitchenObjectScriptable, IKitchenObject parent) {
         Transform kitchenObjectTransform = Instantiate(kitchenObjectScriptable.GetKitchenObject());
         kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(parent);
     }

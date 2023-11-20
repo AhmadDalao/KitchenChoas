@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : BaseCounter {
+public class Player : MonoBehaviour, IKitchenObject {
 
     public static Player Instance { get; private set; }
+
+    public event EventHandler OnPlayerPickedSomethingEvent;
 
     public event EventHandler<CounterSelectVisualEventArgs> CounterSelectVisualEvent;
     public class CounterSelectVisualEventArgs : EventArgs {
@@ -14,6 +16,12 @@ public class Player : BaseCounter {
 
     [SerializeField] private GameInputManager _gameInputManager;
     [SerializeField] private LayerMask _layerMask;
+
+
+    [SerializeField] private Transform _spawnLocation;
+
+
+    private KitchenObject _kitchenObject;
 
 
     [Header("Float")]
@@ -151,6 +159,31 @@ public class Player : BaseCounter {
 
     public bool GetIsMoving() {
         return _isMoving;
+    }
+
+
+    public Transform GetTransformToFollowParent() {
+        return _spawnLocation;
+    }
+
+    public void ClearKitchenObject() {
+        this._kitchenObject = null;
+    }
+
+    public void SetKitchenObject(KitchenObject kitchenObject) {
+        this._kitchenObject = kitchenObject;
+
+        if (_kitchenObject != null) {
+            OnPlayerPickedSomethingEvent?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public KitchenObject GetKitchenObject() {
+        return this._kitchenObject;
+    }
+
+    public bool HasKitchenObject() {
+        return this._kitchenObject != null;
     }
 
 

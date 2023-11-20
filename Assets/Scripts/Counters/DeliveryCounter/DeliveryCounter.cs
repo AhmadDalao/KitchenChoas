@@ -5,6 +5,17 @@ using UnityEngine;
 public class DeliveryCounter : BaseCounter {
 
 
+    public static DeliveryCounter Instance { get; private set; }
+
+    private void Awake() {
+
+        if (Instance != null) {
+            Debug.Log("There is more than 1 Instance of DeliveryCounter");
+        }
+
+        Instance = this;
+    }
+
     public override void Interact(Player player) {
         // player Has a Kitchen Object
         if (player.HasKitchenObject()) {

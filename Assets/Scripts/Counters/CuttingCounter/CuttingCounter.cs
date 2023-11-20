@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CuttingCounter : BaseCounter, IProgressBar {
 
+    public static event EventHandler OnAnyCutSoundEvent;
+
     public event EventHandler CuttingAnimationEvent;
     public event EventHandler<IProgressBar.CuttingProgressEventArgs> CuttingProgressEvent;
 
@@ -12,9 +14,7 @@ public class CuttingCounter : BaseCounter, IProgressBar {
         public float ProgressBarAmount;
     }
 
-
     [SerializeField] private CuttingScriptable[] _cuttingScriptableArray;
-
 
     private int _cuttingCounter;
 
@@ -67,8 +67,6 @@ public class CuttingCounter : BaseCounter, IProgressBar {
 
     }
 
-
-
     public override void InteractCutting(Player player) {
         // ClearCounter has NO kitchen object on top
         if (HasKitchenObject()) {
@@ -79,6 +77,8 @@ public class CuttingCounter : BaseCounter, IProgressBar {
                     _cuttingCounter++;
                     // cutting animation event
                     CuttingAnimationEvent?.Invoke(this, EventArgs.Empty);
+                    // play the sound.
+                    OnAnyCutSoundEvent?.Invoke(this, EventArgs.Empty);
                     // progress bar event
                     CuttingProgressEvent?.Invoke(this, new IProgressBar.CuttingProgressEventArgs {
                         ProgressBarAmount = (float)_cuttingCounter / GetCuttingCountKitchenObject(GetKitchenObject().GetKitchenObjectScriptable())
@@ -102,7 +102,6 @@ public class CuttingCounter : BaseCounter, IProgressBar {
         }
     }
 
-
     // Cutting Check
     private bool HasCuttableKitchenObject(KitchenObjectScriptable kitchenObjectScriptable) {
         foreach (CuttingScriptable kitchenObject in _cuttingScriptableArray) {
@@ -113,6 +112,7 @@ public class CuttingCounter : BaseCounter, IProgressBar {
 
         return false;
     }
+
     // Cutting Count
     private int GetCuttingCountKitchenObject(KitchenObjectScriptable kitchenObjectScriptable) {
         foreach (CuttingScriptable kitchenObject in _cuttingScriptableArray) {
@@ -122,6 +122,7 @@ public class CuttingCounter : BaseCounter, IProgressBar {
         }
         return 0;
     }
+
     // Cutting output 
     private KitchenObjectScriptable GetCuttingOutputKitchenObject(KitchenObjectScriptable kitchenObjectScriptable) {
         foreach (CuttingScriptable kitchenObject in _cuttingScriptableArray) {
