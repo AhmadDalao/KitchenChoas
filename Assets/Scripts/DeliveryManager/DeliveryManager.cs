@@ -18,6 +18,8 @@ public class DeliveryManager : MonoBehaviour {
     private List<RecipeScriptableObject> waitingRecipeList;
 
 
+    private int recipeDeliveredCount;
+
     private float spawnRecipeTimer;
     private float spawnRecipeTimerMax = 4f;
     private int maxRecipeSpawned = 4;
@@ -84,6 +86,7 @@ public class DeliveryManager : MonoBehaviour {
                 if (plateContentMatchesRecipe) {
                     // player successfully delivered the correct recipe.
                     Debug.Log(" player successfully delivered the correct recipe.");
+                    recipeDeliveredCount++;
                     // remove from the list
                     waitingRecipeList.RemoveAt(i);
                     OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
@@ -95,7 +98,6 @@ public class DeliveryManager : MonoBehaviour {
             }
         }
 
-
         // no matches found.
         // player did not deliver correct recipe.
         Debug.Log(" player did not deliver correct recipe.");
@@ -106,6 +108,10 @@ public class DeliveryManager : MonoBehaviour {
 
     public List<RecipeScriptableObject> GetRecipeScriptableObjectsListFromManager() {
         return waitingRecipeList;
+    }
+
+    public int GetRecipeDeliveredCount() {
+        return recipeDeliveredCount;
     }
 
 }

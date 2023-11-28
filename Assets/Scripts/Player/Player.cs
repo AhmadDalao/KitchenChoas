@@ -57,12 +57,19 @@ public class Player : MonoBehaviour, IKitchenObject {
     }
 
     private void _gameInputManager_InteractCuttingEvent(object sender, EventArgs e) {
+        // if game state is over than playing return prevent the player from interacting
+        if (!GameManager.Instance.GetIsPlaying()) return;
+
         if (_baseCounter != null) {
             _baseCounter.InteractCutting(this);
         }
+
     }
 
     private void _gameInputManager_InteractEvent(object sender, EventArgs e) {
+        // if game state is over than playing return prevent the player from interacting
+        if (!GameManager.Instance.GetIsPlaying()) return;
+
         if (_baseCounter != null) {
             _baseCounter.Interact(this);
         }
