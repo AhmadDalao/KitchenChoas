@@ -5,31 +5,33 @@ using UnityEngine;
 
 public class GameOverUI : MonoBehaviour {
 
-    [SerializeField] private TextMeshProUGUI recipeDeliveredCount;
-
+    [SerializeField] private TextMeshProUGUI _recipeDeliveredNumber;
 
     private void Start() {
         GameManager.Instance.OnGameStateChange += Instance_OnGameStateChange;
-        HideGameOver();
+        Hide();
     }
 
 
     private void Instance_OnGameStateChange(object sender, System.EventArgs e) {
-        if (GameManager.Instance.GetIsGameOver()) {
-            ShowGameOver();
-            recipeDeliveredCount.text = DeliveryManager.Instance.GetRecipeDeliveredCount().ToString();
+
+        if (GameManager.Instance.IsGameOver()) {
+            _recipeDeliveredNumber.text = DeliveryManager.Instance.GetRecipeDeliveredCount().ToString();
+            Show();
         } else {
-            HideGameOver();
+            Hide();
         }
+
+    }
+
+    private void Show() {
+        this.gameObject.SetActive(true);
+    }
+
+    private void Hide() {
+        this.gameObject.SetActive(false);
     }
 
 
-    private void ShowGameOver() {
-        gameObject.SetActive(true);
-    }
-
-    private void HideGameOver() {
-        gameObject.SetActive(false);
-    }
 
 }

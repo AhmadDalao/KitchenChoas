@@ -9,6 +9,11 @@ public class TrashCounter : BaseCounter {
 
     public static event EventHandler OnTrashEvent;
 
+
+    new public static void ResetStaticData() {
+        OnTrashEvent = null;
+    }
+
     public override void Interact(Player player) {
         // ClearCounter has NO kitchen object on top
         if (!HasKitchenObject()) {

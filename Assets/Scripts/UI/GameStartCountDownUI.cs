@@ -7,32 +7,35 @@ using UnityEngine;
 public class GameStartCountDownUI : MonoBehaviour {
 
 
-    [SerializeField] private TextMeshProUGUI countDownText;
+    [SerializeField] private TextMeshProUGUI _countDownText;
 
 
     private void Start() {
         GameManager.Instance.OnGameStateChange += Instance_OnGameStateChange;
-        HideCountDown();
+        Hide();
     }
 
     private void Instance_OnGameStateChange(object sender, EventArgs e) {
-        if (GameManager.Instance.GetGameStateIsCountDown()) {
-            ShowCountDown();
+
+        if (GameManager.Instance.IsWaitingToPlayCountDown()) {
+            Show();
         } else {
-            HideCountDown();
+            Hide();
         }
+
     }
 
     private void Update() {
-        countDownText.text = Mathf.Ceil(GameManager.Instance.GetGameCountDownTimer()).ToString();
+        _countDownText.text = Mathf.Ceil(GameManager.Instance.GetWaitingToPlayCountDown()).ToString();
     }
 
-    private void ShowCountDown() {
-        countDownText.gameObject.SetActive(true);
+
+    private void Show() {
+        _countDownText.gameObject.SetActive(true);
     }
 
-    private void HideCountDown() {
-        countDownText.gameObject.SetActive(false);
+    private void Hide() {
+        _countDownText.gameObject.SetActive(false);
     }
 
 }

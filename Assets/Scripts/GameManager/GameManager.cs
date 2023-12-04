@@ -5,87 +5,116 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-
     public static GameManager Instance { get; private set; }
+
+    public enum GameState {
+        waitingToPlay,
+        waitingToPlayCountDown,
+        playingTime,
+        gameOver,
+    }
 
     public event EventHandler OnGameStateChange;
 
-    public enum State {
-        waitingForGame,
-        GameCountDown,
-        GamePlaying,
-        GameOver
-    }
+    public event EventHandler ShowPausedUI;
+    public event EventHandler HidePausedUI;
 
+    private GameState gameState;
 
-    private State state;
+    private float waitingToPlayTimer = 1f;
+    private float waitingToPlayCountDown = 3f;
+    private float playingTimeTimer;
+    private float playingTimeTimerMax = 10f; // change it later
 
-
-    private float waitingForGameTimer = 1f;
-    private float GameCountDownTimer = 3f;
-    private float GamePlayingTimer;
-    private float GamePlayingTimerMax = 40f; // change time limit later just for testing leaving it as 10 seconds
+    private bool isGamePaused = false;
 
 
     private void Awake() {
 
         if (Instance != null) {
-            Debug.Log("Game Manager has more than 1 instance");
+            Debug.Log("GameManager has more than 1 instance");
         }
 
         Instance = this;
     }
 
-    private void Update() {
+    private void Start() {
+        GameInputManager.Instance.GamePauseEvent += Instance_GamePauseEvent;
+    }
 
-        switch (state) {
-            case State.waitingForGame:
-                waitingForGameTimer -= Time.deltaTime;
-                if (waitingForGameTimer < 0f) {
-                    state = State.GameCountDown;
+    private void Instance_GamePauseEvent(object sender, EventArgs e) {
+        TogglePauseGame();
+    }
+
+    private void Update() {
+        switch (gameState) {
+            case GameState.waitingToPlay:
+                waitingToPlayTimer -= Time.deltaTime;
+                Debug.Log("Waiting To Play Timer");
+                if (waitingToPlayTimer < 0f) {
+                    gameState = GameState.waitingToPlayCountDown;
                     OnGameStateChange?.Invoke(this, EventArgs.Empty);
                 }
                 break;
-            case State.GameCountDown:
-                GameCountDownTimer -= Time.deltaTime;
-                if (GameCountDownTimer < 0f) {
-                    state = State.GamePlaying;
-                    GamePlayingTimer = GamePlayingTimerMax;
+            case GameState.waitingToPlayCountDown:
+                waitingToPlayCountDown -= Time.deltaTime;
+                Debug.Log("Count Time before playing");
+                if (waitingToPlayCountDown < 0f) {
+                    gameState = GameState.playingTime;
+                    playingTimeTimer = playingTimeTimerMax;
                     OnGameStateChange?.Invoke(this, EventArgs.Empty);
                 }
                 break;
-            case State.GamePlaying:
-                GamePlayingTimer -= Time.deltaTime;
-                if (GamePlayingTimer < 0f) {
-                    state = State.GameOver;
+            case GameState.playingTime:
+                playingTimeTimer -= Time.deltaTime;
+                Debug.Log("Now Playing !! ");
+                if (playingTimeTimer < 0f) {
+                    gameState = GameState.gameOver;
                     OnGameStateChange?.Invoke(this, EventArgs.Empty);
                 }
                 break;
-            case State.GameOver:
+            case GameState.gameOver:
+                Debug.Log("game over !! cant play now");
                 break;
         }
+    }
+    // didn't use it yet
+    public bool IsWaitingToPlay() {
+        return gameState == GameState.waitingToPlay;
+    }
 
+    public bool IsPlayingTimeState() {
+        return gameState == GameState.playingTime;
+    }
+
+    public float GetGamePlayingCountDown() {
+        return 1 - (playingTimeTimer / playingTimeTimerMax);
+    }
+
+    public bool IsWaitingToPlayCountDown() {
+        return gameState == GameState.waitingToPlayCountDown;
+    }
+
+    public float GetWaitingToPlayCountDown() {
+        return waitingToPlayCountDown;
+    }
+
+    public bool IsGameOver() {
+        return gameState == GameState.gameOver;
     }
 
 
-    public bool GetIsPlaying() {
-        return state == State.GamePlaying;
+    public void TogglePauseGame() {
+        isGamePaused = !isGamePaused;
+        if (isGamePaused) {
+            Time.timeScale = 0f;
+            ShowPausedUI?.Invoke(this, EventArgs.Empty);
+        } else {
+            Time.timeScale = 1f;
+            HidePausedUI?.Invoke(this, EventArgs.Empty);
+        }
     }
 
-    public bool GetGameStateIsCountDown() {
-        return state == State.GameCountDown;
-    }
 
-    public bool GetIsGameOver() {
-        return state == State.GameOver;
-    }
-
-    public float GetGameCountDownTimer() {
-        return GameCountDownTimer;
-    }
-
-    public float GetGamePlayingTimer() {
-        return 1 - (GamePlayingTimer / GamePlayingTimerMax);
-    }
 
 }

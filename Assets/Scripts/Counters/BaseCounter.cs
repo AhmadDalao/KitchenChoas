@@ -7,6 +7,9 @@ public class BaseCounter : MonoBehaviour, IKitchenObject {
 
     public static event EventHandler OnAnyDropEvent;
 
+    public static void ResetStaticData() {
+        OnAnyDropEvent = null;
+    }
 
     [SerializeField] private Transform _spawnLocation;
 

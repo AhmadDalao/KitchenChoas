@@ -7,6 +7,11 @@ public class CuttingCounter : BaseCounter, IProgressBar {
 
     public static event EventHandler OnAnyCutSoundEvent;
 
+
+    new public static void ResetStaticData() {
+        OnAnyCutSoundEvent = null;
+    }
+
     public event EventHandler CuttingAnimationEvent;
     public event EventHandler<IProgressBar.CuttingProgressEventArgs> CuttingProgressEvent;
 

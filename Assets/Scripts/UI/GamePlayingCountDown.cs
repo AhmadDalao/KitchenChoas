@@ -7,36 +7,41 @@ using UnityEngine.UI;
 public class GamePlayingCountDown : MonoBehaviour {
 
 
-    [SerializeField] private Image gameCountDown;
+    [SerializeField] private Image _playingTimeCounterImage;
+    [SerializeField] private GameObject _counterContainer;
 
+    private void Awake() {
+        _playingTimeCounterImage.fillAmount = 0f;
+    }
 
     private void Start() {
         GameManager.Instance.OnGameStateChange += Instance_OnGameStateChange;
-        gameCountDown.fillAmount = 0f;
         Hide();
     }
 
+    private void Update() {
+        _playingTimeCounterImage.fillAmount = GameManager.Instance.GetGamePlayingCountDown();
+    }
 
     private void Instance_OnGameStateChange(object sender, System.EventArgs e) {
-        if (GameManager.Instance.GetIsPlaying()) {
+
+        if (GameManager.Instance.IsPlayingTimeState()) {
             Show();
         } else {
             Hide();
         }
-    }
-
-    private void Update() {
-        gameCountDown.fillAmount = GameManager.Instance.GetGamePlayingTimer();
 
     }
 
     private void Show() {
-        gameObject.SetActive(true);
+        _counterContainer.gameObject.SetActive(true);
     }
 
     private void Hide() {
-        gameObject.SetActive(false);
+        _counterContainer.gameObject.SetActive(false);
     }
+
+
 
 
 }

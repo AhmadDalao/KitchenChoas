@@ -40,7 +40,6 @@ public class Player : MonoBehaviour, IKitchenObject {
 
     private void Awake() {
 
-        _moveDistance = _moveSpeed * Time.deltaTime;
 
         if (Instance != null) {
             Debug.Log("there is more than 1 player Instance");
@@ -56,9 +55,10 @@ public class Player : MonoBehaviour, IKitchenObject {
         _gameInputManager.InteractCuttingEvent += _gameInputManager_InteractCuttingEvent;
     }
 
+
     private void _gameInputManager_InteractCuttingEvent(object sender, EventArgs e) {
         // if game state is over than playing return prevent the player from interacting
-        if (!GameManager.Instance.GetIsPlaying()) return;
+        if (!GameManager.Instance.IsPlayingTimeState()) return;
 
         if (_baseCounter != null) {
             _baseCounter.InteractCutting(this);
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour, IKitchenObject {
 
     private void _gameInputManager_InteractEvent(object sender, EventArgs e) {
         // if game state is over than playing return prevent the player from interacting
-        if (!GameManager.Instance.GetIsPlaying()) return;
+        if (!GameManager.Instance.IsPlayingTimeState()) return;
 
         if (_baseCounter != null) {
             _baseCounter.Interact(this);
@@ -84,6 +84,7 @@ public class Player : MonoBehaviour, IKitchenObject {
 
 
     private void HandlePlayerMovement() {
+        _moveDistance = _moveSpeed * Time.deltaTime;
 
         Vector2 userInput = _gameInputManager.GetPlayerMovementVector2Normalized();
         Vector3 moveDirection = new Vector3(userInput.x, 0f, userInput.y);
