@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,7 +13,16 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] private Button quitButton;
 
 
+    [SerializeField] private EventSystem eventSystem;
+
+
     private void Awake() {
+
+
+        eventSystem.SetSelectedGameObject(null);
+        eventSystem.SetSelectedGameObject(playButton.gameObject);
+
+
         playButton.onClick.AddListener(() => {
             ScenesLoader.Load(ScenesLoader.Scene.GameScene);
         });
@@ -23,6 +33,7 @@ public class MainMenuUI : MonoBehaviour {
 
         Time.timeScale = 1f;
     }
+
 
 
 

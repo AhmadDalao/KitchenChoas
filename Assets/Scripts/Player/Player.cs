@@ -40,6 +40,7 @@ public class Player : MonoBehaviour, IKitchenObject {
 
     private void Awake() {
 
+        this.transform.position = new Vector3(1.06f, 0f, -1f);
 
         if (Instance != null) {
             Debug.Log("there is more than 1 player Instance");
@@ -50,6 +51,8 @@ public class Player : MonoBehaviour, IKitchenObject {
 
 
     private void Start() {
+
+
 
         _gameInputManager.InteractEvent += _gameInputManager_InteractEvent;
         _gameInputManager.InteractCuttingEvent += _gameInputManager_InteractCuttingEvent;

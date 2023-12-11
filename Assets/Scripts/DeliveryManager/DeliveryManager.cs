@@ -42,7 +42,7 @@ public class DeliveryManager : MonoBehaviour {
         spawnRecipeTimer -= Time.deltaTime;
         if (spawnRecipeTimer < 0f) {
             spawnRecipeTimer = spawnRecipeTimerMax;
-            if (waitingRecipeList.Count < maxRecipeSpawned) {
+            if (GameManager.Instance.IsPlayingTimeState() && waitingRecipeList.Count < maxRecipeSpawned) {
                 RecipeScriptableObject recipe = recipeList.GetRecipeListRandom();
                 Debug.Log(recipe.GetRecipeName());
                 waitingRecipeList.Add(recipe);

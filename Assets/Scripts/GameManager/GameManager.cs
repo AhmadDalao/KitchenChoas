@@ -21,10 +21,9 @@ public class GameManager : MonoBehaviour {
 
     private GameState gameState;
 
-    private float waitingToPlayTimer = 1f;
     private float waitingToPlayCountDown = 3f;
     private float playingTimeTimer;
-    private float playingTimeTimerMax = 10f; // change it later
+    private float playingTimeTimerMax = 60f; // change it later
 
     private bool isGamePaused = false;
 
@@ -40,6 +39,14 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         GameInputManager.Instance.GamePauseEvent += Instance_GamePauseEvent;
+        GameInputManager.Instance.InteractEvent += Instance_InteractEvent;
+    }
+
+    private void Instance_InteractEvent(object sender, EventArgs e) {
+        if (gameState == GameState.waitingToPlay) {
+            gameState = GameState.waitingToPlayCountDown;
+            OnGameStateChange?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void Instance_GamePauseEvent(object sender, EventArgs e) {
@@ -49,12 +56,7 @@ public class GameManager : MonoBehaviour {
     private void Update() {
         switch (gameState) {
             case GameState.waitingToPlay:
-                waitingToPlayTimer -= Time.deltaTime;
-                Debug.Log("Waiting To Play Timer");
-                if (waitingToPlayTimer < 0f) {
-                    gameState = GameState.waitingToPlayCountDown;
-                    OnGameStateChange?.Invoke(this, EventArgs.Empty);
-                }
+
                 break;
             case GameState.waitingToPlayCountDown:
                 waitingToPlayCountDown -= Time.deltaTime;

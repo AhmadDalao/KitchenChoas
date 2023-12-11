@@ -31,7 +31,7 @@ public class StoveCounter : BaseCounter, IProgressBar {
     private KitchenObjectScriptable _cookedMeatPatty;
     private KitchenObjectScriptable _burnedMeatPatty;
 
-    private State _state;
+    public State _state;
     private void Start() {
         _state = State.Idle;
     }
@@ -101,6 +101,11 @@ public class StoveCounter : BaseCounter, IProgressBar {
                     StoveOnVisualEvent.Invoke(this, new StoveOnVisualEventArgs {
                         stoveState = _state
                     });
+                    // progress bar event trigger
+                    CuttingProgressEvent?.Invoke(this, new IProgressBar.CuttingProgressEventArgs {
+                        ProgressBarAmount = 0f
+                    });
+
                     break;
             }
         }
@@ -150,6 +155,11 @@ public class StoveCounter : BaseCounter, IProgressBar {
                 CuttingProgressEvent?.Invoke(this, new IProgressBar.CuttingProgressEventArgs {
                     ProgressBarAmount = 0f
                 });
+
+                // player removed the meat.
+
+
+
             } else {
                 // player is holding something 
                 // check if it is a plate kitchen object
@@ -254,5 +264,9 @@ public class StoveCounter : BaseCounter, IProgressBar {
     }
 
 
+
+    public bool isFried() {
+        return _state == State.Fried;
+    }
 
 }

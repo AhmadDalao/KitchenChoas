@@ -28,7 +28,7 @@ public class PlateCounter : BaseCounter {
             // reset the timer for the next spawn
             _plateSpawnTimer = 0;
             // check if you can spawn a plate
-            if (_plateSpawnCount < _plateSpawnMax) {
+            if (GameManager.Instance.IsPlayingTimeState() && _plateSpawnCount < _plateSpawnMax) {
                 // increase the plate count
                 _plateSpawnCount++;
                 // trigger the event spawn a prefab visual 
